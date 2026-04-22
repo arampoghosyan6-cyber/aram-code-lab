@@ -16,6 +16,11 @@ from django.utils.translation import gettext_lazy as _
 import os
 from dotenv import load_dotenv
 
+from whitenoise.storage import CompressedManifestStaticFilesStorage
+
+class NonStrictManifestStaticFilesStorage(CompressedManifestStaticFilesStorage):
+    manifest_strict = False
+
 load_dotenv() # Սա կարդում է .env ֆայլը
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -233,15 +238,12 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 # Այն թղթապանակը, որտեղ կհավաքվեն բոլոր CSS/JS-ները
 #STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Whitenoise-ի կարգավորումը, որպեսզի ֆայլերը լինեն սեղմված և արագ աշխատեն
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        "OPTIONS": {
-            "manifest_strict": False,  # <--- ԱՅՍ ՏՈՂԸ ԿԼՈՒԾԻ ԽՆԴԻՐԸ
-        },
+        "BACKEND": "config.settings.NonStrictManifestStaticFilesStorage",
     },
 }
