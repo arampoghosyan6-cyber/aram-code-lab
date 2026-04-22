@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ material.title }} - {% trans "Aram Code Lab" %}{% endblock %}
+
+{% block content %}
+<div class="inner-width" style="padding: 120px 0 50px 0; min-height: 60vh;">
+    <a href="javascript:history.back()" style="color: #ff4757; text-decoration: none;">← {% trans "Go Back" %}</a>
+    <h1 class="section-title" style="margin-top: 20px;">{{ material.title }}</h1>
+
+    <div class="content-area" style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); color: #333; font-size: 18px; line-height: 1.8;">
+        {{ material.content|safe }}
+    </div>
+</div>
+
+    {% if related_items %}
+<div class="inner-width" style="padding: 50px 20px; max-width: 1000px; margin: auto; text-align: left;">
+
+    <hr style="margin: 20px 0 40px 0; border: 1px solid #ddd;">
+
+    <h2 class="section-title" style="margin-bottom: 40px; text-align: center;">
+        {% trans "Related Materials" %}
+    </h2>
+
+    <div class="materials-list" style="display: flex; flex-direction: column; gap: 25px;">
+        {% for item in related_items %}
+            <div class="responsive-card">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.title }}" class="responsive-card-img">
+                {% endif %}
+                <div class="responsive-card-text">
+                    <h3 style="margin-bottom: 15px; color: #333; font-size: 24px;">{{ item.title }}</h3>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                        {% trans "Created on:" %} {{ item.created_at|date:"d M, Y" }}
+                    </p>
+                    <a href="{% url 'material_detail' item.id %}" style="background: #ff4757; color: white; padding: 10px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                        {% trans "Read Article" %} →
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endif %}
+{% endblock %}

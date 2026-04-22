@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+    <section id="home">
+  <div class="inner-width">
+    <div class="content">
+      <h1 class="line anim-typewritter">Aram Code Lab</h1>
+
+      <p style="font-size: 22px; color: #fff; margin-bottom: 30px; opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+        {% trans "Bridging software engineering and mathematical logic." %}
+      </p>
+
+      <div class="sm">
+        <a href="#" class="fab fa-github"></a>
+        <a href="https://www.linkedin.com/in/aram-poghosyan-3aba8619b" target="_blank" class="fab fa-linkedin-in"></a>
+        <a href="#" class="fab fa-youtube"></a>
+      </div>
+
+      <div class="buttons">
+        <a href="#about">{% trans "ABOUT ME" %}</a>
+        <a href="#works" style="background-color: #fc5c65; color: #fff; border: none;">{% trans "VIEW MY WORKS" %}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="about" style="padding: 100px 0; overflow: hidden;">
+      <div class="inner-width">
+        <h1 class="section-title">{% trans "About Me" %}</h1>
+
+        <div class="about-content" style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px;">
+
+          <div class="about-pic" style="flex: 1 1 300px; min-width: 280px;">
+            <img src="{% static 'images/hack.jpg' %}" alt="Aram" style="width: 100%; max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); display: block;" />
+          </div>
+
+          <div class="about-text" style="flex: 1 1 300px; min-width: 280px; color: #333;">
+            <h2 style="font-size: 28px; margin-bottom: 20px; color: #ff4757;">
+              {% trans "Aram Code Lab: The Intersection of Software Engineering and Mathematical Thinking" %}
+            </h2>
+
+            <p style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+              {% blocktrans %}
+              Welcome to Aram Code Lab. This is not just a portfolio—it is a platform where software engineering meets the logic of higher mathematics.
+              I am Aram, a developer and math enthusiast. I believe that the best solutions are born at the intersection of practical code implementation and deep mathematical analysis.
+              On this site, I share knowledge that goes beyond simple syntax, focusing on how and why a system works.
+              {% endblocktrans %}
+            </p>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #222;">{% trans "What will you find here?" %}</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">
+                  <i class="fas fa-code" style="color: #ff4757; margin-right: 10px;"></i>
+                  <strong>{% trans "Real-World Projects:" %}</strong> {% trans "Completed projects, ranging from architectural solutions to final code, showcasing the application of modern technologies." %}
+                </li>
+                <li style="margin-bottom: 10px;">
+                  <i class="fas fa-calculator" style="color: #ff4757; margin-right: 10px;"></i>
+                  <strong>{% trans "Higher Mathematics & Algorithms:" %}</strong> {% trans "Articles uncovering the mathematical models underlying programming, from linear algebra and probability theory to complex algorithmic challenges." %}
+                </li>
+                <li style="margin-bottom: 10px;">
+                  <i class="fas fa-book-reader" style="color: #ff4757; margin-right: 10px;"></i>
+                  <strong>{% trans "Technical Guides:" %}</strong> {% trans "Practical materials to help you refine your skills, based on provable logic rather than assumptions." %}
+                </li>
+            </ul>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #222;">{% trans "How can we collaborate?" %}</h3>
+            <p style="margin-bottom: 15px;">{% trans "If you are looking for deep understanding rather than superficial knowledge, this platform is for you." %}</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">
+                  <i class="fas fa-envelope-open-text" style="color: #ff4757; margin-right: 10px;"></i>
+                  <strong>{% trans "Subscribe (Newsletter):" %}</strong> {% trans "Join my newsletter to receive new articles, algorithmic challenges, and project updates." %}
+                </li>
+                <li style="margin-bottom: 10px;">
+                  <i class="fas fa-comments" style="color: #ff4757; margin-right: 10px;"></i>
+                  <strong>{% trans "Get in Touch (Contact):" %}</strong> {% trans "Do you have a complex programming problem, a collaboration proposal, or do you want to discuss a mathematical topic? Reach out via the 'Contact' section." %}
+                </li>
+            </ul>
+
+            <p style="margin-top: 25px; font-style: italic; color: #555;">{% trans "Thank you for visiting. Let’s build systems based on precise mathematics and efficient code." %}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="works" class="dark" style="padding-top: 80px;">
+      <div class="inner-width">
+        <h1 class="section-title">{% trans "Latest Projects" %}</h1>
+        <div class="works">
+          {% for project in projects %}
+          <a href="{% url 'project_detail' project.id %}" class="work-card">
+            <div class="work-img">
+              <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+            </div>
+            <div class="work-info">
+              <h3>{{ project.title }}</h3>
+              <p class="cat">{{ project.tech_stack }}</p>
+              <div class="btn-project">{% trans "View Project" %}</div>
+            </div>
+          </a>
+          {% empty %}
+          <p>{% trans "No projects added yet." %}</p>
+          {% endfor %}
+        </div>
+        <div class="view-all-container">
+            <a href="{% url 'all_projects' %}" class="view-all-btn">{% trans "View All Projects" %}</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="subjects" style="padding-top: 80px;">
+      <div class="inner-width">
+        <h1 class="section-title">{% trans "Subjects" %}</h1>
+
+        <div class="subjects-grid" style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px;">
+          {% for subject in subjects %}
+          <a href="{% url 'subject_detail' subject.id %}" class="subject-card" style="width: 320px; text-decoration: none; background: #222; border-radius: 12px; overflow: hidden; display: block; transition: transform 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+            {% if subject.image %}
+              <img src="{{ subject.image.url }}" alt="{{ subject.name }}" style="width: 100%; height: 200px; object-fit: cover; display: block;" />
+            {% else %}
+              <div style="width: 100%; height: 200px; background: #333; display: flex; align-items: center; justify-content: center;">
+                <i class="{{ subject.icon_class }}" style="font-size: 50px; color: #ff4757;"></i>
+              </div>
+            {% endif %}
+            <div style="padding: 20px; text-align: left;">
+              <h3 style="margin-bottom: 10px; color: white; font-size: 22px;">{{ subject.name }}</h3>
+              <p style="font-size: 14px; color: #aaa;">{{ subject.description }}</p>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="dark">
+      <div class="inner-width">
+        <h1 class="section-title">{% trans "Services" %}</h1>
+        <div class="services">
+
+          <div class="service">
+            <i class="icon fas fa-project-diagram"></i>
+            <h4>{% trans "Software Architecture" %}</h4>
+            <p>{% trans "Designing scalable and efficient systems with a focus on clean, maintainable code structures." %}</p>
+          </div>
+
+          <div class="service">
+            <i class="icon fas fa-calculator"></i>
+            <h4>{% trans "Algorithmic Analysis" %}</h4>
+            <p>{% trans "Optimizing performance through deep mathematical modeling and complex algorithm analysis." %}</p>
+          </div>
+
+          <div class="service">
+            <i class="icon fas fa-code"></i>
+            <h4>{% trans "Web Development" %}</h4>
+            <p>{% trans "Building robust, high-performance web applications tailored to your specific business needs." %}</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h1 class="section-title">{% trans "Contact Info" %}</h1>
+      <div class="contact-info">
+        <div class="card">
+          <i class="icon fas fa-envelope"></i>
+          <div class="card-content">
+            <h3>{% trans "Email" %}</h3>
+            <span>email@address.com</span>
+          </div>
+        </div>
+        <div class="card">
+          <i class="icon fas fa-phone"></i>
+          <div class="card-content">
+            <h3>{% trans "Phone Number" %}</h3>
+            <span>+37477123456</span>
+          </div>
+        </div>
+          <div class="card">
+          <i class="icon fas fa-map-marker-alt"></i>
+          <div class="card-content">
+            <h3>{% trans "Address" %}</h3>
+            <span>{% trans "Yerevan, Armenia" %}</span>
+          </div>
+          </div>
+      </div>
+    </section>
+{% endblock %}

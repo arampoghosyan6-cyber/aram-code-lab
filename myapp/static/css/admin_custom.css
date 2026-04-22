@@ -1,0 +1,17 @@
+/* Ստիպում ենք CKEditor-ին չհատել էկրանի սահմանները ադմին պանելում */
+.django-ckeditor-widget {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+.cke {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Որպեսզի շատ երկար տեքստերը չփչացնեն դիզայնը */
+.cke_inner, .cke_reset {
+    width: 100% !important;
+}

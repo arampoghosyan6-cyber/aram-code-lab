@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "All Projects - Aram Code Lab" %}{% endblock %}
+
+{% block content %}
+<div class="inner-width" style="padding: 120px 0 50px 0; min-height: 60vh;">
+    <h1 class="section-title">{% trans "All Projects" %}</h1>
+
+    <div class="works">
+      {% for project in projects %}
+      <a href="{% url 'project_detail' project.id %}" class="work-card">
+        <div class="work-img">
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+        </div>
+        <div class="work-info">
+          <h3>{{ project.title }}</h3>
+          <p class="cat">{{ project.tech_stack }}</p>
+          <div class="btn-project">{% trans "View Project" %}</div>
+        </div>
+      </a>
+      {% empty %}
+      <p>{% trans "No projects added yet." %}</p>
+      {% endfor %}
+    </div>
+</div>
+{% endblock %}

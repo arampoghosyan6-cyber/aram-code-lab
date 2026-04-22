@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ subject.name }} - {% trans "Aram Code Lab" %}{% endblock %}
+
+{% block content %}
+<div class="inner-width" style="padding: 120px 20px 50px 20px; min-height: 60vh; text-align: center; max-width: 1000px; margin: auto;">
+    <h1 style="font-size: 5vw;width: 100%;text-align: center;" class="section-title">
+        <i class="{{ subject.icon_class }}" style="color: #ff4757;"></i> {{ subject.name }}
+    </h1>
+    <p style="font-size: 1.0rem; margin-top: 20px; max-width: 90%; margin: 20px auto 0 auto; line-height: 1.6;text-align: center;" class="subject-description">
+        {{ subject.description }}
+    </p>
+
+    <hr style="margin: 40px 0; border: 1px solid #ddd;">
+
+    <div class="materials-list" style="margin-top: 50px; display: flex; flex-direction: column; gap: 25px;">
+        {% for material in subject.materials.all %}
+            <div class="responsive-card">
+                {% if material.image %}
+                    <img src="{{ material.image.url }}" alt="{{ material.title }}" class="responsive-card-img">
+                {% endif %}
+                <div class="responsive-card-text">
+                    <h3 style="margin-bottom: 15px; color: #333; font-size: 24px;">{{ material.title }}</h3>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                        {% trans "Created on:" %} {{ material.created_at|date:"d M, Y" }}
+                    </p>
+                    <a href="{% url 'material_detail' material.id %}" style="background: #ff4757; color: white; padding: 10px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                        {% trans "Read Article" %} →
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="text-align: center; color: #777;">{% trans "No materials available for this subject yet." %}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

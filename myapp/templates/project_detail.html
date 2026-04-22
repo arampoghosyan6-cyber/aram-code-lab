@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ project.title }} - {% trans "Aram Code Lab" %}{% endblock %}
+
+{% block content %}
+<div class="inner-width" style="padding: 120px 0 50px 0; min-height: 60vh;">
+    <h1 class="section-title">{{ project.title }}</h1>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <span style="background: #ff4757; color: white; padding: 5px 15px; border-radius: 20px;">{{ project.tech_stack }}</span>
+    </div>
+    <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" style="width: 100%; border-radius: 10px; margin-bottom: 30px;">
+        <div class="content-area" style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); color: #333; font-size: 18px; line-height: 1.8; text-align: left;">
+            {{ project.description|safe }}
+        </div>
+    </div>
+</div>
+
+    {% if related_items %}
+<section class="related-section" style="padding: 60px 0; background: #f1f1f1; margin-top: 50px;">
+  <div class="inner-width">
+    <h2 class="section-title" style="margin-bottom: 40px; font-size: 24px;">{% trans "Other Projects" %}</h2>
+    <div class="works" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+
+      {% for item in related_items %}
+      <a href="{% url 'project_detail' item.id %}" class="work-card">
+        <div class="work-img">
+          {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.title }}">
+          {% endif %}
+        </div>
+        <div class="work-info">
+          <h3>{{ item.title }}</h3>
+          <p class="cat">{{ item.tech_stack }}</p>
+          <span class="btn-project">{% trans "View Project" %}</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

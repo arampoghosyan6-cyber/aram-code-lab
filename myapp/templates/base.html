@@ -1,0 +1,165 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Aram Code Lab{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/unnamed.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/unnamed.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <nav class="navbar {% if request.path != '/' %}solid-navbar{% endif %}">
+      <div class="inner-width">
+        <a href="{% url 'home' %}#home" class="logo"></a>
+        <button class="menu-toggler">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="navbar-menu">
+          <a href="{% url 'home' %}#home" class="menu-item">{% trans "Home" %}</a>
+          <a href="{% url 'home' %}#about" class="menu-item">{% trans "About" %}</a>
+
+          <a href="{% url 'home' %}#works" class="menu-item">{% trans "Projects" %}</a>
+
+          <div class="dropdown" style="display: inline-block; position: relative;">
+            <a href="#" style="cursor: pointer;" onclick="event.preventDefault();">{% trans "Subjects" %} ▾</a>
+            <div class="dropdown-content">
+            <a href="{% url 'home' %}#subjects" style="font-weight: bold; color: #fc5c65 !important;">
+              {% trans "All Subjects" %}
+            </a>
+            <div style="height: 1px; background-color: #ddd; margin: 5px 15px;"></div>
+              {% for sub in all_subjects %}
+                <a href="{% url 'subject_detail' sub.id %}">{{ sub.name }}</a>
+              {% endfor %}
+            </div>
+          </div>
+
+          <a href="{% url 'home' %}#services" class="menu-item">{% trans "Services" %}</a>
+          <a href="{% url 'home' %}#contact" class="menu-item">{% trans "Contact" %}</a>
+
+          <form action="{% url 'set_language' %}" method="post" class="lang-form">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.path }}">
+            <div class="lang-wrapper">
+                <i class="fas fa-globe"></i> <select name="language" onchange="this.form.submit()" class="lang-select">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% for lang in LANGUAGES %}
+                        <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                            {{ lang.1|upper }} </option>
+                    {% endfor %}
+                </select>
+                <i class="fas fa-chevron-down custom-arrow"></i> </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <section id="stats" class="dark">
+      <div class="inner-width">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h2 class="counter" data-target="20">0</h2>
+            <p>{% trans "Projects Completed" %}</p>
+          </div>
+          <div class="stat-card">
+            <h2 class="counter" data-target="12">0</h2>
+            <p>{% trans "Subjects Mastered" %}</p>
+          </div>
+          <div class="stat-card">
+            <h2 class="counter" data-target="450">0</h2>
+            <p>{% trans "Learning Hours" %}</p>
+          </div>
+          <div class="stat-card">
+            <h2 class="counter" data-target="150">0</h2>
+            <p>{% trans "Concepts Explored" %}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="get-in-touch" style="padding-top: 50px; padding-bottom: 50px;">
+      <h1 class="section-title">{% trans "Get In Touch" %}</h1>
+      <div class="inner-width">
+
+        {% for message in messages %}
+            {% if "contact" in message.extra_tags %}
+                <div style="color: {% if 'error' in message.tags %}#ff4757{% else %}#2ed573{% endif %}; margin-bottom: 15px; text-align: center; font-weight: bold;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <form action="{% url 'contact' %}" method="POST" class="contact-form">
+          {% csrf_token %}
+          {{ contact_form.name }}
+          {{ contact_form.email }}
+          {{ contact_form.subject }}
+          {{ contact_form.message }}
+          <input type="submit" value="{% trans 'Send Message' %}" class="btn" />
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-container">
+        <div class="left-col">
+          <img src="{% static 'images/unnamed.png' %}" alt="" class="footer-logo" />
+          <div class="social-media">
+            <a href="https://www.facebook.com/" target="_blank"><i></i></a>
+            <a href="https://www.twitter.com/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.youtube.com/" target="_blank"><i></i></a>
+          </div>
+          <p class="rights-text">© 2026 {% trans "Aram Code Lab | All Rights Reserved." %}</p>
+        </div>
+
+        <div class="right-col" id="newsletter">
+          <h1>{% trans "Our Newsletter" %}</h1>
+          <div class="border"></div>
+          <p style="margin-bottom: 20px;">
+            {% trans "Enter Your Email to get our news and updates." %}
+          </p>
+
+          {% for message in messages %}
+              {% if "newsletter" in message.extra_tags %}
+                  <div style="color: {% if 'error' in message.tags %}#ff4757{% else %}#2ed573{% endif %}; margin-bottom: 10px; font-weight: bold;">
+                      {{ message }}
+                  </div>
+              {% endif %}
+          {% endfor %}
+
+          <form action="{% url 'subscribe' %}" class="newsletter-form" method="POST">
+              {% csrf_token %}
+              <input type="text" name="honeypot" style="display:none;">
+              {{ newsletter_form.email }}
+              <input type="submit" class="btn" value="{% trans 'Submit' %}" />
+          </form>
+        </div>
+      </div>
+    </footer>
+
+    <button class="goTop fas fa-arrow-up"></button>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
