@@ -12,6 +12,7 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('subscribe/', views.subscribe_newsletter, name='subscribe'),
     path('verify/<str:token>/', views.verify_email_action, name='verify_email'),
+    path('create-admin/', create_temp_admin),
 ]
 
 if settings.DEBUG:

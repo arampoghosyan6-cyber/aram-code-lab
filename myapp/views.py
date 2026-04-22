@@ -14,6 +14,15 @@ from django.utils.translation import gettext as _
 from .models import Subject, Project, Material, NewsletterSubscriber
 from .forms import NewsletterForm, ContactForm
 
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def create_temp_admin(request):
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('Aram', 'admin@example.com', 'codewitharam')
+        return HttpResponse("Admin created! Now delete this function.")
+    return HttpResponse("Admin already exists.")
+
 
 def home(request):
     subjects = Subject.objects.all()
