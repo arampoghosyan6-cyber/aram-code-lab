@@ -16,11 +16,6 @@ from django.utils.translation import gettext_lazy as _
 import os
 from dotenv import load_dotenv
 
-from whitenoise.storage import CompressedManifestStaticFilesStorage
-
-class NonStrictManifestStaticFilesStorage(CompressedManifestStaticFilesStorage):
-    manifest_strict = False
-
 load_dotenv() # Սա կարդում է .env ֆայլը
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -239,11 +234,13 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 #STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
+# settings.py
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "config.settings.NonStrictManifestStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
