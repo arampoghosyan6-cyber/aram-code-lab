@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import create_temp_admin  # <--- ԱՅՍ ՏՈՂԸ ՊԱԿԱՍՈՒՄ ԷՐ
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -13,7 +12,6 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('subscribe/', views.subscribe_newsletter, name='subscribe'),
     path('verify/<str:token>/', views.verify_email_action, name='verify_email'),
-    path('create-admin/', create_temp_admin),
 ]
 
 if settings.DEBUG:
